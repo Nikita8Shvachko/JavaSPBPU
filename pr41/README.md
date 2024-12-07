@@ -10,11 +10,11 @@ files by creating efficient variable-length codes based on character frequencies
 - **Command-Line Arguments**: Control the program via command-line arguments.
 - **Color-Coded Console Output**: Uses colors for better readability.
 
-## Algorithm
+# Algorithm
 
-# Huffman Coding: File Encoding and Decoding
+## Huffman Coding: File Encoding and Decoding
 
-## How Huffman Coding Works
+### How Huffman Coding Works
 
 Huffman coding is a lossless data compression technique where characters are assigned shorter binary codes
 based on their frequency in the input file. More frequent characters get shorter codes.
