@@ -1,4 +1,3 @@
-
 # Huffman Coding in Java
 
 This program encodes and decodes files using the Huffman coding algorithm. It allows you to compress and decompress text
@@ -9,7 +8,7 @@ files by creating efficient variable-length codes based on character frequencies
 - **File Encoding**: Compress a file using Huffman coding.
 - **File Decoding**: Decompress a file that has been encoded with Huffman coding.
 - **Command-Line Arguments**: Control the program via command-line arguments.
-- **Color-Coded Console Output**: Uses colors for better readability and debugging.
+- **Color-Coded Console Output**: Uses colors for better readability.
 
 ## Algorithm
 
@@ -27,8 +26,8 @@ based on their frequency in the input file. More frequent characters get shorter
 2. **Build the Huffman Tree**:
    Using the frequencies, a tree is built where:
 
-    - The least frequent characters are combined first.
-    - Each left branch is labeled `0` and each right branch is labeled `1`.
+   - The least frequent characters are combined first.
+   - Each left branch is labeled `0` and each right branch is labeled `1`.
 3. **Generate Huffman Codes**:
    Starting from the root, each character is assigned a binary code based on the path to
    its node  (left is `0`, right is `1`).
@@ -55,9 +54,9 @@ The encoded file contains two parts:
    This part maps each character to its corresponding Huffman code.
    It includes:
 
-    - The number of unique characters.
-    - For each character, its Huffman code.
-        - e.g., `a` -> `00`, `b` -> `01`, `c` -> `10`, etc.
+   - The number of unique characters.
+   - For each character, it's Huffman code.
+      - e.g., `a` -> `00`, `b` -> `01`, `c` -> `10`, etc.
 2. **Encoded Data**:
    This is the content of the original file, where each character is replaced by its Huffman code.
    e.g., `00 01 01 10 10 11`
@@ -67,8 +66,8 @@ The encoded file contains two parts:
 #### If the input file contains only one unique character, the file structure simplifies:
 
 - This made for 2 reasons:
-    - The Huffman dictionary is not needed for a single character.
-    - It's more efficient to store the single character directly in the file.
+   - The Huffman dictionary is not needed for a single character.
+   - It's more efficient to store the single character directly in the file.
 
 ---
 
@@ -76,30 +75,7 @@ The encoded file contains two parts:
 
 ### Example 1: File with Multiple Characters (`aaaabbcc`)
 
-For the input `aaaabbcc`, Huffman tree would look like this:
-
-```graphviz
-digraph HuffmanTree {
-node [shape=circle, fontname="Helvetica"];
-
-    // Nodes for characters 'a', 'b', 'c' and their frequencies
-    a [label="a\n(4)" shape=box];
-    b [label="b\n(2)" shape=box];
-    c [label="c\n(2)" shape=box];
-    
-    // Internal nodes
-    ab [label="ab\n(6)" shape=ellipse];
-    abc [label="abc\n(8)" shape=ellipse];
-    
-    // Edges for the tree structure
-    a -> ab [label="0"];
-    b -> ab [label="1"];
-    ab -> abc [label="0"];
-    c -> abc [label="1"];
-}
-```
-
-and the encoded file structure would look like this:
+For the input `aaaabbcc` encoded file structure would look like this:
 
 `3`       (Number of unique characters)
 `a`       (Character ‘a’)
