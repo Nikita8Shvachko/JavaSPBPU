@@ -31,12 +31,25 @@ public class HuffmanCoding {
         for (char c : content.toCharArray()) {
             freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
         }
+        //System.console().printf("Frequencies: %s\n", freqMap); // Debugging
+        if (freqMap.size() == 1) {
+            try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(outputFile))) {
+                // Write the single character as its code
+                dos.writeInt(1); // Only one symbol in the dictionary
+                dos.writeChar(freqMap.keySet().iterator().next()); // The single character
+                dos.writeUTF(""); // The Huffman code for it is an empty string
+                dos.writeUTF(content); // Write the content as-is since it's just one character repeated
+            }
+            return; // Exit the method early
+        }
+
 
         // Build the Huffman tree
         PriorityQueue<Node> pq = new PriorityQueue<>();
         for (var entry : freqMap.entrySet()) {
             pq.add(new Node(entry.getKey(), entry.getValue(), null, null));
         }
+
         while (pq.size() > 1) {
             Node left = pq.poll();
             Node right = pq.poll();
@@ -47,7 +60,7 @@ public class HuffmanCoding {
         Map<Character, String> huffmanCodes = new HashMap<>();
         buildCodes(root, "", huffmanCodes);
 
-        System.out.println("Huffman Codes: " + huffmanCodes); // Debugging
+        //System.console().printf("Huffman Codes: %s\n", huffmanCodes); // Debugging
 
         // Encode content
         StringBuilder encoded = new StringBuilder();
@@ -55,7 +68,7 @@ public class HuffmanCoding {
             encoded.append(huffmanCodes.get(c));
         }
 
-        System.out.println("Encoded String: " + encoded); // Debugging
+        //System.console().printf("Encoded String: %s\n", encoded); // Debugging
 
         // Write to output file
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(outputFile))) {
@@ -71,6 +84,16 @@ public class HuffmanCoding {
     public void decode(String inputFile, String outputFile) throws IOException {
         try (DataInputStream dis = new DataInputStream(new FileInputStream(inputFile))) {
             int dictSize = dis.readInt();
+            // Special case: if there is only one unique character
+            if (dictSize == 1) {
+                char singleChar = dis.readChar();  // Read the single character
+                dis.readUTF();  // Read the empty Huffman code
+                String content = dis.readUTF();  // Read the content as-is (since it's one character repeated)
+
+                // Write decoded content to output file
+                Files.write(new File(outputFile).toPath(), content.getBytes());
+                return;  // Exit early as we don't need to decode further
+            }
             Map<String, Character> reverseCodes = new HashMap<>();
             for (int i = 0; i < dictSize; i++) {
                 char ch = dis.readChar();
@@ -78,11 +101,11 @@ public class HuffmanCoding {
                 reverseCodes.put(code, ch);
             }
 
-            System.out.println("Reverse Codes: " + reverseCodes); // Debugging
+            //System.console().printf("Reverse Codes: %s\n", reverseCodes); // Debugging
 
             String encoded = dis.readUTF();
 
-            System.out.println("Encoded from file: " + encoded); // Debugging
+            //System.console().printf("Encoded from file: %s\n", encoded); // Debugging
 
             // Decode content
             StringBuilder decoded = new StringBuilder();
@@ -95,7 +118,7 @@ public class HuffmanCoding {
                 }
             }
 
-            System.out.println("Decoded String: " + decoded); // Debugging
+            //System.console().printf("Decoded String: ,%s\n", decoded); // Debugging
 
             // Write decoded content to output file
             Files.write(new File(outputFile).toPath(), decoded.toString().getBytes());
