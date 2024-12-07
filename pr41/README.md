@@ -1,4 +1,3 @@
-Certainly! Here is the full text for the README.md file:
 
 # Huffman Coding in Java
 
