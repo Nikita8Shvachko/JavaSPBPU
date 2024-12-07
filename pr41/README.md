@@ -26,31 +26,27 @@ based on their frequency in the input file. More frequent characters get shorter
 
 ### Encoding Process
 
-1. **Analyze Character Frequencies**:  
+1. **Analyze Character Frequencies**:
    The first step is to calculate how often each character appears in the input file.
-
-2. **Build the Huffman Tree**:  
+2. **Build the Huffman Tree**:
    Using the frequencies, a tree is built where:
+
     - The least frequent characters are combined first.
     - Each left branch is labeled `0` and each right branch is labeled `1`.
-
-3. **Generate Huffman Codes**:  
+3. **Generate Huffman Codes**:
    Starting from the root, each character is assigned a binary code based on the path to
    its node  (left is `0`, right is `1`).
-
-4. **Encode the File**:  
+4. **Encode the File**:
    Each character in the input file is replaced with its Huffman code to create the encoded data.
-
-5. **Write the Encoded File**:  
+5. **Write the Encoded File**:
    The Huffman dictionary (mapping characters to their codes) and the encoded data are saved to the output file.
 
 ### Decoding Process
 
-1. **Read the Huffman Dictionary**:  
+1. **Read the Huffman Dictionary**:
    The encoded file contains the dictionary that tells the decoder how to translate the binary codes back into
    characters.
-
-2. **Decode the Data**:  
+2. **Decode the Data**:
    The binary data is read and translated into characters using the dictionary.
 
 ---
@@ -59,14 +55,14 @@ based on their frequency in the input file. More frequent characters get shorter
 
 The encoded file contains two parts:
 
-1. **Huffman Dictionary**:  
-   This part maps each character to its corresponding Huffman code.  
+1. **Huffman Dictionary**:
+   This part maps each character to its corresponding Huffman code.
    It includes:
+
     - The number of unique characters.
     - For each character, its Huffman code.
         - e.g., `a` -> `00`, `b` -> `01`, `c` -> `10`, etc.
-
-2. **Encoded Data**:  
+2. **Encoded Data**:
    This is the content of the original file, where each character is replaced by its Huffman code.
    e.g., `00 01 01 10 10 11`
 
@@ -84,16 +80,38 @@ The encoded file contains two parts:
 
 ### Example 1: File with Multiple Characters (`aaaabbcc`)
 
-For the input `aaaabbcc`, the encoded file structure would look like this:
+For the input `aaaabbcc`, Huffman tree would look like this:
 
-`3`       (Number of unique characters) \
-`a`       (Character ‘a’) \
-`00`      (Huffman code for ‘a’) \
-`b`     (Character ‘b’) \
-`01`      (Huffman code for ‘b’) \
-`c`       (Character ‘c’) \
-`10`      (Huffman code for ‘c’) \
-\
+```graphviz
+digraph HuffmanTree {
+node [shape=circle, fontname="Helvetica"];
+
+    // Nodes for characters 'a', 'b', 'c' and their frequencies
+    a [label="a\n(4)" shape=box];
+    b [label="b\n(2)" shape=box];
+    c [label="c\n(2)" shape=box];
+    
+    // Internal nodes
+    ab [label="ab\n(6)" shape=ellipse];
+    abc [label="abc\n(8)" shape=ellipse];
+    
+    // Edges for the tree structure
+    a -> ab [label="0"];
+    b -> ab [label="1"];
+    ab -> abc [label="0"];
+    c -> abc [label="1"];
+}
+```
+
+and the encoded file structure would look like this:
+
+`3`       (Number of unique characters)
+`a`       (Character ‘a’)
+`00`      (Huffman code for ‘a’)
+`b`     (Character ‘b’)
+`01`      (Huffman code for ‘b’)
+`c`       (Character ‘c’)
+`10`      (Huffman code for ‘c’)
 `000000000101010110110` (Encoded data)
 
 ### Example 2: File with One Character (`aaaa`)
