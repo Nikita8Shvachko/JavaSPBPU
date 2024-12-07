@@ -13,9 +13,6 @@ files by creating efficient variable-length codes based on character frequencies
 
 ## Algorithm
 
-Here’s a simplified explanation of the Huffman coding algorithm and the structure of the encoded file in Markdown
-format:
-
 # Huffman Coding: File Encoding and Decoding
 
 ## How Huffman Coding Works
@@ -134,8 +131,6 @@ The encoded file consists of:
 If there is only one character in the file, the structure is simplified to just the character and its repeated content.
 This makes the encoding efficient even for simple cases.
 
-This Markdown version provides a simplified overview of the Huffman coding algorithm and the structure of the encoded
-file. It breaks down the process in easy-to-understand terms and uses clear examples for better comprehension.
 
 ## Usage
 
