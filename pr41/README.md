@@ -1,176 +1,93 @@
-# Huffman Coding in Java
+Кодирование Хаффмана на Java
 
-This program encodes and decodes files using the Huffman coding algorithm. It allows you to compress and decompress text
-files by creating efficient variable-length codes based on character frequencies.
+Эта программа выполняет сжатие и восстановление текстовых файлов с помощью алгоритма кодирования Хаффмана.
+Она позволяет уменьшить размер файла за счёт создания эффективных кодов переменной длины, основанных на частотах
+символов.
 
-## Features
+Возможности
+• Сжатие файлов: Кодирование файла с помощью алгоритма Хаффмана.
+• Восстановление файлов: Декодирование ранее сжатого файла.
+• Командная строка: Управление программой через аргументы командной строки.
+• Цветной вывод: Сообщения с цветовым кодированием для удобства.
 
-- **File Encoding**: Compress a file using Huffman coding.
-- **File Decoding**: Decompress a file that has been encoded with Huffman coding.
-- **Command-Line Arguments**: Control the program via command-line arguments.
-- **Color-Coded Console Output**: Uses colors for better readability.
+Как работает кодирование Хаффмана
 
-## Algorithm
+Кодирование Хаффмана — это метод сжатия без потерь, где более частые символы получают короткие бинарные коды.
 
-# Huffman Coding: File Encoding and Decoding
+Процесс сжатия
 
-## How Huffman Coding Works
+1. Подсчёт частот символов: Определяем, сколько раз встречается каждый символ в файле.
+2. Построение дерева Хаффмана:
+   • Символы с меньшей частотой объединяются первыми.
+   • Левый путь — 0, правый — 1.
+3. Генерация кодов: Каждому символу присваивается код, основанный на пути в дереве.
+4. Кодирование файла: Заменяем символы их кодами.
+5. Сохранение данных: Записываем закодированные данные и таблицу кодов в файл.
 
-Huffman coding is a lossless data compression technique where characters are assigned shorter binary codes
-based on their frequency in the input file. More frequent characters get shorter codes.
+Процесс восстановления
 
-### Encoding Process
+1. Чтение таблицы кодов: Из файла считывается информация о том, как декодировать символы.
+2. Декодирование данных: Бинарные коды преобразуются обратно в символы.
 
-1. **Analyze Character Frequencies**:
-   The first step is to calculate how often each character appears in the input file.
-2. **Build the Huffman Tree**:
-   Using the frequencies, a tree is built where:
+Структура закодированного файла
 
-   - The least frequent characters are combined first.
-   - Each left branch is labeled `0` and each right branch is labeled `1`.
-3. **Generate Huffman Codes**:
-   Starting from the root, each character is assigned a binary code based on the path to
-   its node  (left is `0`, right is `1`).
-4. **Encode the File**:
-   Each character in the input file is replaced with its Huffman code to create the encoded data.
-5. **Write the Encoded File**:
-   The Huffman dictionary (mapping characters to their codes) and the encoded data are saved to the output file.
+1. Таблица кодов:
+   • Количество уникальных символов.
+   • Символ и его бинарный код (например, a -> 00).
+2. Кодированные данные:
+   • Текст, где символы заменены их кодами (например, aaaabbcc -> 00000001011010).
 
-### Decoding Process
+Особый случай: один уникальный символ
 
-1. **Read the Huffman Dictionary**:
-   The encoded file contains the dictionary that tells the decoder how to translate the binary codes back into
-   characters.
-2. **Decode the Data**:
-   The binary data is read and translated into characters using the dictionary.
+Если файл содержит только один символ:
+• Таблица кодов не нужна.
+• Содержимое файла сохраняется как есть.
 
----
+Примеры
 
-## Structure of the Encoded File
+1. Много символов:
+   aaaabbcc
 
-The encoded file contains two parts:
+   3 (Количество уникальных символов) \
+   a 00 (Символ и код) \
+   b 01 \
+   c 10 \
+   00000001011010 (Закодированные данные) \
 
-1. **Huffman Dictionary**:
-   This part maps each character to its corresponding Huffman code.
-   It includes:
+2. Один символ: aaaa
 
-   - The number of unique characters.
-   - For each character, it's Huffman code.
-      - e.g., `a` -> `00`, `b` -> `01`, `c` -> `10`, etc.
-2. **Encoded Data**:
-   This is the content of the original file, where each character is replaced by its Huffman code.
-   e.g., `00 01 01 10 10 11`
+   1 (Один уникальный символ) \
+   a      (Символ) \
+   1111 (Содержимое файла) \
 
-### Special Case: Single Unique Character
+Использование
 
-#### If the input file contains only one unique character, the file structure simplifies:
+Аргументы командной строки
+• -m: Показать информацию о программе. \
+• -c: Сжать файл. \
+• -d: Распаковать файл. \
 
-- This made for 2 reasons:
-   - The Huffman dictionary is not needed for a single character.
-   - It's more efficient to store the single character directly in the file.
+Примеры запуска
 
----
+1. Кодирование файла:
 
-## Example of Encoded File Structure
+   ```shell
+   java App.java -c input.txt 
+   ```
 
-### Example 1: File with Multiple Characters (`aaaabbcc`)
+2. Декодирование файла:
 
-For the input `aaaabbcc` encoded file structure would look like this:
+   ```shell
+   java App.java -d encoded.bin
+   ```
 
-`3`       (Number of unique characters)
-`a`       (Character ‘a’)
-`00`      (Huffman code for ‘a’)
-`b`     (Character ‘b’)
-`01`      (Huffman code for ‘b’)
-`c`       (Character ‘c’)
-`10`      (Huffman code for ‘c’)
-`000000000101010110110` (Encoded data)
+3. Информация о программе:
 
-### Example 2: File with One Character (`aaaa`)
+   ```shell
+   java App.java -m
+   ```
 
-For the input `aaaa`, the encoded file structure would be:
-
-`1`       (Number of unique characters)
-`a`       (Character ‘a’)
-(Empty Huffman code)
-`1111`    (The content, as-is)
-
----
-
-## Summary
-
-The encoded file consists of:
-
-1. **Huffman Dictionary**: Maps each character to its Huffman code.
-2. **Encoded Data**: The original content, where each character is replaced by its Huffman code.
-
-If there is only one character in the file, the structure is simplified to just the character and its repeated content.
-This makes the encoding efficient even for simple cases.
+Требования
+• Java 8+: Убедитесь, что установлен JDK 8 или выше.
 
 
-## Usage
-
-### Command-Line Arguments
-
-- **`-m`**: Display information about the program and how to use it.
-- **`-c`**: Encode a file using Huffman coding.
-- **`-d`**: Decode a file that was encoded using Huffman coding.
-
-### Syntax
-
-```shell
-java App.java -c/-d {inputFile} {outputFile}
-```
-
-Where:
-
-- **`-c`**: For encoding a file.
-- **`-d`**: For decoding a file.
-- **`{inputFile}`**: The input file to encode or decode.
-- **`{outputFile}`**: The output file for the encoded or decoded result.
-
-### Example Usage
-
-#### Encoding a File:
-
-To encode a file called `input.txt` and output the encoded file as `encoded.txt`:
-
-```shell
-java App.java -c input.txt encoded.txt
-```
-
-#### Decoding a File:
-
-To decode an encoded file `encoded.txt` and output the result as `decoded.txt`:
-
-```shell
-java App.java -d encoded.txt decoded.txt
-```
-
-#### Displaying Program Information:
-
-To display information about the program:
-
-```shell
-java App.java -m
-```
-
-## Color-Coded Output
-
-The program outputs color-coded messages for better clarity:
-
-- **Green**: Success messages (e.g., encoding/decoding completed).
-- **Blue**: Informational messages (e.g., file names).
-- **Yellow**: Highlighted file paths.
-- **Red**: Error messages.
-
-For example:
-
-- **Green** indicates successful encoding/decoding.
-- **Blue** is used to show the file names.
-- **Red** is used for error messages.
-
-## Requirements
-
-- **Java 8+**: Ensure that you have Java installed (JDK 8 or higher).
-- **zsh**: The program execution code is written in `zsh`.

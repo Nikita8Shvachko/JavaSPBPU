@@ -2,7 +2,7 @@ import java.io.IOException;
 
 public class App {
 
-    // ANSI escape codes for colors
+    // ANSI color codes
     public static final String RESET = "\033[0m";  // Reset to default
     public static final String RED = "\033[0;31m";
     public static final String GREEN = "\033[0;32m";
@@ -11,21 +11,21 @@ public class App {
 
     private static void printUsage() {
         System.out.println(GREEN + "This program encodes and decodes files using Huffman coding." + RESET);
-        System.out.println(GREEN + "Usage:\n" + BLUE + "java App.java -c/-d " + YELLOW + "{inputFile} {outputFile}" + RESET);
+        System.out.println(YELLOW + "Usage:\n" + "java App.java -c/-d " + BLUE + "{inputFile}\n\toutputFile name = " + RED + "{inputFile}" + BLUE + " + " + RESET + YELLOW + "{_encoded.bin}" + BLUE + " / " + YELLOW + "{_decoded.txt} " + RESET);
         System.out.println("-m for more information" + RESET);
 
     }
 
     private static void handleEncodingDecoding(HuffmanCoding huffman, String[] args) {
         try {
-            if (args[0].equals("-c") && args.length == 3) {
-                huffman.encode(args[1], args[2]);
+            if (args[0].equals("-c") && args.length == 2) {
+                String outputFile = huffman.encode(args[1]);
                 System.out.println(GREEN + "File " + YELLOW + args[1] + GREEN + " encoded successfully into:" + RESET);
-                System.out.println(YELLOW + args[2] + RESET);
-            } else if (args[0].equals("-d") && args.length == 3) {
-                huffman.decode(args[1], args[2]);
+                System.out.println(YELLOW + outputFile + RESET);
+            } else if (args[0].equals("-d") && args.length == 2) {
+                String outputFile = huffman.decode(args[1]);
                 System.out.println(GREEN + "File " + YELLOW + args[1] + GREEN + " decoded successfully into:" + RESET);
-                System.out.println(YELLOW + args[2] + RESET);
+                System.out.println(YELLOW + outputFile + RESET);
 
             } else {
                 System.out.println(RED + "Invalid option." + RESET + BLUE + " Use -m for more information." + RESET);
@@ -51,7 +51,7 @@ public class App {
 
             case "-c":
             case "-d":
-                // Perform encoding or decoding based on the argument
+                // выполнить кодирование/декодирование
                 handleEncodingDecoding(huffman, args);
                 break;
 
